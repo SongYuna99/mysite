@@ -5,29 +5,30 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.poscodx.mysite.dao.UserDao;
 import com.poscodx.mysite.vo.UserVo;
 import com.poscodx.web.mvc.Action;
+import com.poscodx.web.utils.WebUtil;
 
-public class JoinAction implements Action {
+public class LoginAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String gender = request.getParameter("gender");
 
-		UserVo userVo = new UserVo();
-		userVo.setName(name);
-		userVo.setEmail(email);
-		userVo.setPassword(password);
-		userVo.setGender(gender);
+		UserVo userVo = new UserDao().findByEmailAndPassword(email, password);
+		if (userVo == null) {
+			request.setAttribute("email", email);
+			WebUtil.forward("user/loginform", request, response);
+			return;
+		}
 
-		new UserDao().insert(userVo);
-
-		response.sendRedirect(request.getContextPath() + "/user?a=joinsuccess");
+		HttpSession session = request.getSession(true);
+		session.setAttribute("authUser", userVo);
+		response.sendRedirect(request.getContextPath());
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.poscodx.mysite.vo;
 
 public class UserVo {
-	private int no;
+	private Long no;
 	private String name;
 	private String email;
 	private String password;
@@ -14,11 +14,11 @@ public class UserVo {
 				+ gender + ", joinDate=" + joinDate + "]";
 	}
 
-	public int getNo() {
+	public Long getNo() {
 		return no;
 	}
 
-	public void setNo(int no) {
+	public void setNo(Long no) {
 		this.no = no;
 	}
 
