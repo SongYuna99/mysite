@@ -100,4 +100,110 @@ public class UserDao {
 		}
 		return userVo;
 	}
+
+	public UserVo findByNo(Long no) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UserVo userVo = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "select no, name, email, gender from user where no=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setLong(1, no);
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				userVo = new UserVo();
+				userVo.setNo(rs.getLong(1));
+				userVo.setName(rs.getString(2));
+				userVo.setEmail(rs.getString(3));
+				userVo.setGender(rs.getString(4));
+			}
+
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+		return userVo;
+	}
+
+	public void update(UserVo userVo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "update user set name=?, password=password(?), gender=? where no=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, userVo.getName());
+			pstmt.setString(2, userVo.getPassword());
+			pstmt.setString(3, userVo.getGender());
+			pstmt.setLong(4, userVo.getNo());
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+	}
+
+	public void updateExceptPassword(UserVo userVo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "update user set name=?, gender=? where no=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, userVo.getName());
+			pstmt.setString(2, userVo.getGender());
+			pstmt.setLong(3, userVo.getNo());
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+	}
 }

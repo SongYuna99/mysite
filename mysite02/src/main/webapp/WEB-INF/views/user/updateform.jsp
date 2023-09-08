@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-UserVo authUser = (UserVo)session.getAttribute("authUser");
+UserVo authUser = (UserVo)session.getAttribute("user");
 %>
 <!DOCTYPE html>
 <html>
@@ -20,6 +20,7 @@ UserVo authUser = (UserVo)session.getAttribute("authUser");
 
 				<form id="join-form" name="joinForm" method="post" action="<%=request.getContextPath()%>/user">
 					<input type="hidden" name="a" value="update">
+					<input type="hidden" name="no" value="<%= authUser.getNo() %>">
 					
 					<label class="block-label" for="name">이름</label> 
 					<input id="name" name="name" type="text" value="<%= authUser.getName() %>"> 
