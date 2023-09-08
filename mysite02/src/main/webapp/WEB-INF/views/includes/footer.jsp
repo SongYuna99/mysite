@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div id="footer">
-		<p>(c)opyright 2015, 2016, 2017, 2018</p>
+		<p>(c)opyright 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023</p>
 	</div>
 </body>
 </html>
