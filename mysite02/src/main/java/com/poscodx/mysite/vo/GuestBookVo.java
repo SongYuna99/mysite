@@ -1,7 +1,7 @@
 package com.poscodx.mysite.vo;
 
 public class GuestBookVo {
-	private int no;
+	private long no;
 	private String name;
 	private String password;
 	private String contens;
@@ -13,11 +13,11 @@ public class GuestBookVo {
 				+ ", regDate=" + regDate + "]";
 	}
 
-	public int getNo() {
+	public long getNo() {
 		return no;
 	}
 
-	public void setNo(int no) {
+	public void setNo(long no) {
 		this.no = no;
 	}
 
