@@ -1,4 +1,4 @@
-package com.poscodx.mysite.web.mvb.main;
+package com.poscodx.mysite.web.mvc.guestbook;
 
 import java.io.IOException;
 
@@ -7,14 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.poscodx.web.mvc.Action;
+import com.poscodx.web.utils.WebUtil;
 
-public class MainAction implements Action {
+public class DeleteFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		request
-		.getRequestDispatcher("WEB-INF/views/main/index.jsp")
-		.forward(request, response);
+		String no = request.getParameter("no");
+		request.setAttribute("no", no);
+		
+		WebUtil.forward("guestbook/deleteform", request, response);
 	}
 
 }

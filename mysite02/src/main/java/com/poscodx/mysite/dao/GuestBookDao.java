@@ -37,7 +37,7 @@ public class GuestBookDao {
 
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getPassword());
-			pstmt.setString(3, vo.getContens());
+			pstmt.setString(3, vo.getContents());
 
 			pstmt.executeUpdate();
 
@@ -152,7 +152,7 @@ public class GuestBookDao {
 				GuestBookVo vo = new GuestBookVo();
 				vo.setNo(no);
 				vo.setName(name);
-				vo.setContens(contents);
+				vo.setContents(contents);
 				vo.setRegDate(regDate);
 
 				result.add(vo);

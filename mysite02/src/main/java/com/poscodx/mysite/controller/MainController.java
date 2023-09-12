@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.poscodx.mysite.web.mvb.main.MainActionFactroy;
+import com.poscodx.mysite.web.mvc.main.MainActionFactroy;
 import com.poscodx.web.mvc.Action;
 
 public class MainController extends HttpServlet {
@@ -14,9 +14,6 @@ public class MainController extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		String configPath = getServletConfig().getInitParameter("config");
-		System.out.println(configPath);
-		
 		super.init();
 	}
 

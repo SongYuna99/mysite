@@ -8,17 +8,21 @@
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="${ pageContext.request.contextPath }/assets/css/board.css" rel="stylesheet" type="text/css">
+<link href="${ pageContext.request.contextPath }/assets/css/board.css"
+	rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div id="container">
-	
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
+				<!-- 검색 -->
+				<form id="search_form" action="board" method="post">
 					<input type="text" id="kwd" name="kwd" value=""> 
 					<input type="submit" value="찾기">
 				</form>
+				
+				<!-- 게시글 리스트 -->
 				<table class="tbl-ex">
 					<tr>
 						<th>번호</th>
@@ -28,37 +32,50 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<tr>
-						<td>3</td>
-						<td><a href="">세 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-11 12:04:20</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td><a href="">두 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-02 12:04:12</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td><a href="">첫 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-09-25 07:24:32</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
+					
+					<!-- c:forEach 사용 -->
+					<c:set var="count" value="${fn:length(list) }" />
+					<c:forEach items="${ list }" var="vo" varStatus="status">
+						<tr>
+							<td>${count - status.index }</td>
+							<td style="padding-left:${(vo.depth-1)*30}px">
+								<a href="${ pageContext.request.contextPath }/board?a=view&no=${ vo.no }">${ vo.title }</a>
+							</td>
+							<td>${ vo.userName }</td>
+							<td>${ vo.hit }</td>
+							<td>${ vo.regDate }</td>
+							<td>
+								<c:if test="${ authUser.no == vo.userNo }">
+									<a href="${ pageContext.request.contextPath }/board?a=delete&no=${ vo.no }&userNo=${ vo.userNo }" class="del">삭제</a>
+								</c:if>
+							</td>
+						</tr>
+					</c:forEach>
+					
+					
 				</table>
+
+				<!-- pager 추가 -->
+				<div class="pager">
+					<ul>
+						<li><a href="">◀</a></li>
+						<li><a href="">1</a></li>
+						<li class="selected">2</li>
+						<li><a href="">3</a></li>
+						<li>4</li>
+						<li>5</li>
+						<li><a href="">▶</a></li>
+					</ul>
+				</div>
+
+				<!-- write.jsp로 이동 -->
 				<div class="bottom">
-					<a href="" id="new-book">글쓰기</a>
+					<a href="${ pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>
 				</div>
 			</div>
 		</div>
-		
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 	</div>
 </body>
 </html>
