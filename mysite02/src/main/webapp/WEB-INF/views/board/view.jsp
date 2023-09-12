@@ -37,8 +37,9 @@ pageContext.setAttribute("newline", "\n");
 				</table>
 				<div class="bottom">
 					<a href="${ pageContext.request.contextPath }/board">글목록</a>
+					<a href="${ pageContext.request.contextPath }/board?a=replyform&no=${ vo.no }">답글쓰기</a>
 					<c:if test="${ authUser.no == vo.userNo }">
-						<a href="${ pageContext.request.contextPath }/board?a=modify">글수정</a>
+						<a href="${ pageContext.request.contextPath }/board?a=modifyform&no=${ vo.no }&userNo=${ vo.userNo }">글수정</a>
 					</c:if>
 				</div>
 			</div>

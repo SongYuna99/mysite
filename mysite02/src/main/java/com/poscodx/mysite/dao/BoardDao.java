@@ -104,9 +104,7 @@ public class BoardDao {
 			conn = getConnection();
 
 			String sql = "select b.no, b.title, b.contents, b.hit, b.reg_date, b.g_no, b.o_no, b.depth, b.user_no, u.name "
-						+ "from board b, user u "
-						+ "where b.user_no=u.no "
-						+ "order by g_no desc";
+					+ "from board b, user u " + "where b.user_no=u.no " + "order by g_no desc, o_no asc";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -166,22 +164,29 @@ public class BoardDao {
 		try {
 			conn = getConnection();
 
-			String sql = "select no, title, contents, user_no "
-						+ "from board where no = ?";
+			String sql = "select no, title, contents, hit, g_no, o_no, depth, user_no " + "from board where no = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, no);
-			
+
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				no = rs.getLong(1);
 				String title = rs.getString(2);
 				String contents = rs.getString(3);
-				Long userNo = rs.getLong(4);
+				int hit = rs.getInt(4);
+				int gNo = rs.getInt(5);
+				int oNo = rs.getInt(6);
+				int depth = rs.getInt(7);
+				Long userNo = rs.getLong(8);
 
 				result.setNo(no);
 				result.setTitle(title);
-				result.setContents(contents);
+				result.setContents(contents.replaceAll("<br>", "\n"));
+				result.setHit(hit);
+				result.setgNo(gNo);
+				result.setoNo(oNo);
+				result.setDepth(depth);
 				result.setUserNo(userNo);
 			}
 
@@ -246,6 +251,105 @@ public class BoardDao {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setLong(1, no);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+	}
+
+	public void updateContent(BoardVo boardVo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "update board set title=?, contents=? where no=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, boardVo.getTitle());
+			pstmt.setString(2, boardVo.getContents());
+			pstmt.setLong(3, boardVo.getNo());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+	}
+
+	public void updateONo(int gNo, int oNo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "update board set o_no=o_no+1 where g_no=? and o_no>?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, gNo);
+			pstmt.setInt(2, oNo);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+	}
+
+	public void insertReply(BoardVo boardVo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "insert into board(title, contents, reg_date, g_no, o_no, depth, user_no) "
+					+ "values(?, ?, now(), ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, boardVo.getTitle());
+			pstmt.setString(2, boardVo.getContents());
+			pstmt.setInt(3, boardVo.getgNo());
+			pstmt.setInt(4, boardVo.getoNo());
+			pstmt.setInt(5, boardVo.getDepth());
+			pstmt.setLong(6, boardVo.getUserNo());
 
 			pstmt.executeUpdate();
 
