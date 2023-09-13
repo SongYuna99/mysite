@@ -368,4 +368,107 @@ public class BoardDao {
 			}
 		}
 	}
+
+	public int getRowCount() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+
+		try {
+			conn = getConnection();
+
+			String sql = "select count(*) from board";
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				result = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+		return result;
+	}
+
+	public List<BoardVo> selectByPage(int startIndex, int boardNum) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVo> result = new ArrayList<>();
+
+		try {
+			conn = getConnection();
+
+			String sql = "select b.no, b.title, b.contents, b.hit, b.reg_date, "
+					+ "b.g_no, b.o_no, b.depth, b.user_no, u.name "
+					+ "from board b, user u where b.user_no=u.no "
+					+ "order by b.g_no desc, b.o_no asc limit ?, ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndex);
+			pstmt.setInt(2, boardNum);
+			
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Long no = rs.getLong(1);
+				String title = rs.getString(2);
+				String contents = rs.getString(3);
+				int hit = rs.getInt(4);
+				String regDate = rs.getString(5);
+				int gNo = rs.getInt(6);
+				int oNo = rs.getInt(7);
+				int depth = rs.getInt(8);
+				Long userNo = rs.getLong(9);
+				String userName = rs.getString(10);
+
+				BoardVo boardVo = new BoardVo();
+				boardVo.setNo(no);
+				boardVo.setTitle(title);
+				boardVo.setContents(contents);
+				boardVo.setHit(hit);
+				boardVo.setRegDate(regDate);
+				boardVo.setgNo(gNo);
+				boardVo.setoNo(oNo);
+				boardVo.setDepth(depth);
+				boardVo.setUserNo(userNo);
+				boardVo.setUserName(userName);
+
+				result.add(boardVo);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("SQLException : " + e);
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("SQLException : " + e);
+			}
+		}
+		return result;
+	}
 }

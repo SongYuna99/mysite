@@ -25,6 +25,14 @@ public class BoardActionFactory implements ActionFactory {
 			action = new ReplyFormAction();
 		} else if ("reply".equals(actionName)) {
 			action = new ReplyAction();
+		} else if ("getpage".equals(actionName)) {
+			action = new GetPageAction();
+		} else if ("previouspage".equals(actionName)) {
+			action = new PreviousPageAction();
+		} else if ("nextpage".equals(actionName)) {
+			action = new NextPageAction();
+		} else if ("search".equals(actionName)) {
+			action = new SearchAction();
 		} else {
 			action = new BoardAction();
 		}

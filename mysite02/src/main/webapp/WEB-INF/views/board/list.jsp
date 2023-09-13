@@ -18,7 +18,8 @@
 			<div id="board">
 				<!-- 검색 -->
 				<form id="search_form" action="board" method="post">
-					<input type="text" id="kwd" name="kwd" value=""> 
+					<input type="text" id="kwd" name="kwd" value="${ kwd }"> 
+					<input type="hidden"name="a" value="search"> 
 					<input type="submit" value="찾기">
 				</form>
 				
@@ -61,19 +62,26 @@
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="">3</a></li>
-						<li>4</li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+						<li><a href="${ pageContext.request.contextPath }/board?a=previouspage&page=${selectedPage}">◀</a></li>
+						<c:forEach items="${ pagelist }" var="num">
+							<c:choose>
+								<c:when test="${ num == selectedPage }">
+									<li class="selected"><a href="${ pageContext.request.contextPath }/board?a=getpage&page=${num}">${num}</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${ pageContext.request.contextPath }/board?a=getpage&page=${num}">${num}</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>					
+						<li><a href="${ pageContext.request.contextPath }/board?a=nextpage&page=${selectedPage}">▶</a></li>
 					</ul>
 				</div>
 
 				<!-- write.jsp로 이동 -->
 				<div class="bottom">
-					<a href="${ pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>
+					<c:if test="${ not empty authUser.no }">
+						<a href="${ pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>					
+					</c:if>
 				</div>
 			</div>
 		</div>

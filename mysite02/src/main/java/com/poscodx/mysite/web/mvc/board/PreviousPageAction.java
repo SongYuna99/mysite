@@ -13,14 +13,19 @@ import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.web.mvc.Action;
 import com.poscodx.web.utils.WebUtil;
 
-public class BoardAction implements Action {
+public class PreviousPageAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		int rowCount = new BoardDao().getRowCount(); // 총 게시물 개수
 		int boardNum = 5; // 한 페이지 당 표시할 게시물 개수
 		int startCount = 1; // 페이지 시작 1, 6, 11 ...
-		int selectedPage = 1; // 선택된 페이지
+		int selectedPage = Integer.parseInt(request.getParameter("page")); // 선택된 페이지
+
+		if (selectedPage == 1) {
+			return;
+		}
+		selectedPage--;
 
 		int maxPageCount; // 가장 마지막 페이지
 		if (rowCount % boardNum != 0) {
