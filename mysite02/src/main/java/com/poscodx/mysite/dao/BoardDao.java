@@ -302,7 +302,7 @@ public class BoardDao {
 		}
 	}
 
-	public void updateONo(int gNo, int oNo) {
+	public void increaseONo(int gNo, int oNo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 

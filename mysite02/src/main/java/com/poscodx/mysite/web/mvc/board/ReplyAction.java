@@ -44,7 +44,7 @@ public class ReplyAction implements Action {
 		boardVo.setDepth(originalBoard.getDepth() + 1);
 		boardVo.setUserNo(authUser.getNo());
 
-		new BoardDao().updateONo(originalBoard.getgNo(), originalBoard.getoNo());
+		new BoardDao().increaseONo(originalBoard.getgNo(), originalBoard.getoNo());
 		new BoardDao().insertReply(boardVo);
 		
 		response.sendRedirect(request.getContextPath() + "/board");
