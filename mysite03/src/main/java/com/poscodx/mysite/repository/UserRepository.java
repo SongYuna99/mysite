@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Repository;
+
 import com.poscodx.mysite.vo.UserVo;
 
+@Repository
 public class UserRepository {
 	// DB Connection
 	private Connection getConnection() throws SQLException {

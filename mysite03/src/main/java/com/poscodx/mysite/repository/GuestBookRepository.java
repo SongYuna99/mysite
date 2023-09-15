@@ -8,8 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.poscodx.mysite.vo.GuestBookVo;
 
+@Repository
 public class GuestBookRepository {
 	// DB Connection
 	private Connection getConnection() throws SQLException {
