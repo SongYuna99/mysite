@@ -17,8 +17,7 @@
 		<div id="content">
 			<div id="user">
 
-				<form id="join-form" name="joinForm" method="post" action="${ pageContext.request.contextPath }/user">
-					<input type="hidden" name="a" value="join">
+				<form id="join-form" name="joinForm" method="post" action="${ pageContext.request.contextPath }/user/join">
 					
 					<label class="block-label" for="name">이름</label> 
 					<input id="name" name="name" type="text" value=""> 
@@ -32,9 +31,10 @@
 
 					<fieldset>
 						<legend>성별</legend>
-						<label>여</label> <input type="radio" name="gender" value="female"
-							checked="checked"> <label>남</label> <input type="radio"
-							name="gender" value="male">
+						<label>여</label> 
+							<input type="radio" name="gender" value="female" checked="checked"> 
+						<label>남</label> 
+							<input type="radio" name="gender" value="male">
 					</fieldset>
 
 					<fieldset>
