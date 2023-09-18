@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poscodx.mysite.service.GuestbookService;
-import com.poscodx.mysite.vo.GuestBookVo;
+import com.poscodx.mysite.vo.GuestbookVo;
 
 @Controller
 @RequestMapping("/guestbook")
@@ -19,7 +19,7 @@ public class GuestbookController {
 
 	@RequestMapping("")
 	public String main(Model model) {
-		List<GuestBookVo> list = guestbookService.getContentsList();
+		List<GuestbookVo> list = guestbookService.getContentsList();
 		model.addAttribute("list", list);
 
 		return "guestbook/main";

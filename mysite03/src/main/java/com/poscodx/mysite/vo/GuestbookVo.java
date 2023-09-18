@@ -1,6 +1,6 @@
 package com.poscodx.mysite.vo;
 
-public class GuestBookVo {
+public class GuestbookVo {
 	private long no;
 	private String name;
 	private String password;

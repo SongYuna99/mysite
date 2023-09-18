@@ -154,13 +154,22 @@ public class UserRepository {
 		try {
 			conn = getConnection();
 
-			String sql = "update user set name=?, password=password(?), gender=? where no=?";
-			pstmt = conn.prepareStatement(sql);
+			if ("".equals(userVo.getPassword())) {
+				String sql = "update user set name=?, gender=? where no=?";
+				pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, userVo.getName());
-			pstmt.setString(2, userVo.getPassword());
-			pstmt.setString(3, userVo.getGender());
-			pstmt.setLong(4, userVo.getNo());
+				pstmt.setString(1, userVo.getName());
+				pstmt.setString(2, userVo.getGender());
+				pstmt.setLong(3, userVo.getNo());
+			} else {
+				String sql = "update user set name=?, password=password(?), gender=? where no=?";
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, userVo.getName());
+				pstmt.setString(2, userVo.getPassword());
+				pstmt.setString(3, userVo.getGender());
+				pstmt.setLong(4, userVo.getNo());
+			}
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -179,34 +188,4 @@ public class UserRepository {
 		}
 	}
 
-	public void updateExceptPassword(UserVo userVo) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			conn = getConnection();
-
-			String sql = "update user set name=?, gender=? where no=?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, userVo.getName());
-			pstmt.setString(2, userVo.getGender());
-			pstmt.setLong(3, userVo.getNo());
-
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("SQLException : " + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("SQLException : " + e);
-			}
-		}
-	}
 }

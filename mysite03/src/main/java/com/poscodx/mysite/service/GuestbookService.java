@@ -6,22 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.poscodx.mysite.repository.GuestBookRepository;
-import com.poscodx.mysite.vo.GuestBookVo;
+import com.poscodx.mysite.vo.GuestbookVo;
 
 @Service
 public class GuestbookService {
 	@Autowired
 	private GuestBookRepository guestbookRepository;
 
-	public List<GuestBookVo> getContentsList() {
-		return guestbookRepository.selectAll();
+	public List<GuestbookVo> getContentsList() {
+		return guestbookRepository.findAll();
 	}
 	
 	public boolean deleteContents(Long no, String password) {
 		return false;
 	}
 	
-	public boolean addContents(GuestBookVo vo) {
+	public boolean addContents(GuestbookVo vo) {
 		return false;
 	}
 }
