@@ -6,14 +6,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.poscodx.mysite.vo.BoardVo;
 
 @Repository
 public class BoardRepository {
+	@Autowired
+	private SqlSession sqlSession;
+
 	// DB Connection
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
@@ -27,74 +34,14 @@ public class BoardRepository {
 		return conn;
 	}
 
-	public int findMaxGNo() {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int result = 1;
-
-		try {
-			conn = getConnection();
-
-			String sql = "select max(g_no) from board";
-			pstmt = conn.prepareStatement(sql);
-
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				result = rs.getInt(1) + 1;
-			}
-
-		} catch (SQLException e) {
-			System.out.println("SQLException : " + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("SQLException : " + e);
-			}
-		}
-		return result;
+	public int getGno() {
+		return sqlSession.selectOne("board.getGno");
 	}
 
-	public void insert(BoardVo boardVo) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+	public boolean insert(BoardVo boardVo) {
+		int count = sqlSession.insert("board.insert", boardVo);
 
-		try {
-			conn = getConnection();
-
-			String sql = "insert into board(title, contents, reg_date, g_no, o_no, depth, user_no) "
-					+ "values(?, ?, now(), ?, ?, ?, ?)";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, boardVo.getTitle());
-			pstmt.setString(2, boardVo.getContents());
-			pstmt.setInt(3, boardVo.getgNo());
-			pstmt.setInt(4, 1);
-			pstmt.setInt(5, 1);
-			pstmt.setLong(6, boardVo.getUserNo());
-
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("SQLException : " + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("SQLException : " + e);
-			}
-		}
+		return count == 1;
 	}
 
 	public List<BoardVo> selectAll() {
@@ -158,59 +105,8 @@ public class BoardRepository {
 		return result;
 	}
 
-	public BoardVo findByNo(Long no) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		BoardVo result = new BoardVo();
-
-		try {
-			conn = getConnection();
-
-			String sql = "select no, title, contents, hit, g_no, o_no, depth, user_no " + "from board where no = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setLong(1, no);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				no = rs.getLong(1);
-				String title = rs.getString(2);
-				String contents = rs.getString(3);
-				int hit = rs.getInt(4);
-				int gNo = rs.getInt(5);
-				int oNo = rs.getInt(6);
-				int depth = rs.getInt(7);
-				Long userNo = rs.getLong(8);
-
-				result.setNo(no);
-				result.setTitle(title);
-				result.setContents(contents.replaceAll("<br>", "\n"));
-				result.setHit(hit);
-				result.setgNo(gNo);
-				result.setoNo(oNo);
-				result.setDepth(depth);
-				result.setUserNo(userNo);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("SQLException : " + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("SQLException : " + e);
-			}
-		}
-		return result;
+	public BoardVo findByNo(int no) {
+		return sqlSession.selectOne("board.findByNo", no);
 	}
 
 	public void updateHit(Long no) {
@@ -243,34 +139,9 @@ public class BoardRepository {
 		}
 	}
 
-	public void delete(Long no) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			conn = getConnection();
-
-			String sql = "delete from board where no=?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setLong(1, no);
-
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("SQLException : " + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("SQLException : " + e);
-			}
-		}
+	public boolean delete(int no) {
+		int count = sqlSession.delete("board.delete", no);
+		return count == 1;
 	}
 
 	public void updateContent(BoardVo boardVo) {
@@ -411,67 +282,14 @@ public class BoardRepository {
 	}
 
 	public List<BoardVo> selectByPage(int startIndex, int boardNum) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<BoardVo> result = new ArrayList<>();
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("startIndex", startIndex);
+		map.put("boardNum", boardNum);
 
-		try {
-			conn = getConnection();
+		return sqlSession.selectList("board.findByStartIndex", map);
+	}
 
-			String sql = "select b.no, b.title, b.contents, b.hit, b.reg_date, "
-					+ "b.g_no, b.o_no, b.depth, b.user_no, u.name "
-					+ "from board b, user u where b.user_no=u.no "
-					+ "order by b.g_no desc, b.o_no asc limit ?, ? ";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startIndex);
-			pstmt.setInt(2, boardNum);
-			
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				Long no = rs.getLong(1);
-				String title = rs.getString(2);
-				String contents = rs.getString(3);
-				int hit = rs.getInt(4);
-				String regDate = rs.getString(5);
-				int gNo = rs.getInt(6);
-				int oNo = rs.getInt(7);
-				int depth = rs.getInt(8);
-				Long userNo = rs.getLong(9);
-				String userName = rs.getString(10);
-
-				BoardVo boardVo = new BoardVo();
-				boardVo.setNo(no);
-				boardVo.setTitle(title);
-				boardVo.setContents(contents);
-				boardVo.setHit(hit);
-				boardVo.setRegDate(regDate);
-				boardVo.setgNo(gNo);
-				boardVo.setoNo(oNo);
-				boardVo.setDepth(depth);
-				boardVo.setUserNo(userNo);
-				boardVo.setUserName(userName);
-
-				result.add(boardVo);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("SQLException : " + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("SQLException : " + e);
-			}
-		}
-		return result;
+	public Long findUserNoByNo(int no) {
+		return sqlSession.selectOne("board.findUserNoByNo", no);
 	}
 }

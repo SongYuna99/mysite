@@ -24,22 +24,24 @@ pageContext.setAttribute("newline", "\n");
 					</tr>
 					<tr>
 						<td class="label">제목</td>
-						<td>${ vo.title }</td>
+						<td>${ boardVo.title }</td>
 					</tr>
 					<tr>
 						<td class="label">내용</td>
 						<td>
 							<div class="view-content">
-								${ fn:replace(vo.contents, newline, "<br>") }
+								${ fn:replace(boardVo.contents, newline, "<br>") }
 							</div>
 						</td>
 					</tr>
 				</table>
 				<div class="bottom">
 					<a href="${ pageContext.request.contextPath }/board">글목록</a>
-					<a href="${ pageContext.request.contextPath }/board?a=replyform&no=${ vo.no }">답글쓰기</a>
-					<c:if test="${ authUser.no == vo.userNo }">
-						<a href="${ pageContext.request.contextPath }/board?a=modifyform&no=${ vo.no }&userNo=${ vo.userNo }">글수정</a>
+					<c:if test="${ not empty authUser }">
+					<a href="${ pageContext.request.contextPath }/board/replyform/${ boardVo.no }">답글쓰기</a>
+					</c:if>
+					<c:if test="${ boardVo.userNo == authUser.no }">
+						<a href="${ pageContext.request.contextPath }/board/modify/${ boardVo.no }">글수정</a>
 					</c:if>
 				</div>
 			</div>

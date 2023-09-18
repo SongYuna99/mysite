@@ -16,12 +16,12 @@ public class GuestbookService {
 	public List<GuestbookVo> getContentsList() {
 		return guestbookRepository.findAll();
 	}
-	
+
 	public boolean deleteContents(Long no, String password) {
-		return false;
+		return guestbookRepository.deleteByNoAndPassword(no, password);
 	}
-	
-	public boolean addContents(GuestbookVo vo) {
-		return false;
+
+	public boolean addContents(GuestbookVo guestbookVo) {
+		return guestbookRepository.insert(guestbookVo);
 	}
 }
