@@ -1,22 +1,22 @@
 package com.poscodx.mysite.controller;
 
-import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poscodx.mysite.service.BoardService;
-import com.poscodx.mysite.service.UserService;
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.UserVo;
+import com.poscodx.mysite.web.util.WebUtil;
 
 @Controller
 @RequestMapping("/board")
@@ -24,103 +24,115 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	@Autowired
-	private UserService userService;
-
 	@RequestMapping("")
-	public String main() {
-		return "redirect:/board/page/1";
-	}
+	public String main(
+		@RequestParam(value="p", required=true, defaultValue="1") Integer page,
+		@RequestParam(value="kwd", required=true, defaultValue="") String keyword,
+		Model model) {
+		
+		Map<String, Object> map = boardService.getContentsList(page, keyword);
 
-	@RequestMapping(value = "/page/{no}", method = RequestMethod.GET)
-	public String page(@PathVariable("no") int no, Model model) {
-		List<BoardVo> list = boardService.getBoardPage(no);
-		List<Integer> pagelist = boardService.getPageList(no);
-
-		model.addAttribute("list", list);
-		model.addAttribute("pagelist", pagelist);
-		model.addAttribute("selectedPage", no);
-
+		model.addAttribute("map", map);
+		model.addAttribute("keyword", keyword);
+		
 		return "board/main";
 	}
-
-	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public String write(HttpSession session) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-
-		if (authUser == null) {
-			return "user/login";
-		}
-
-		return "board/write";
-	}
-
-	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String write(HttpSession session, BoardVo boardVo) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-
-		if (authUser == null) {
-			return "user/login";
-		}
-
-		boardVo.setUserNo(authUser.getNo());
-		boardVo.setgNo(boardService.getGno() + 1);
-		boardVo.setoNo(1);
-		boardVo.setDepth(1);
-
-		boardService.insert(boardVo);
-
-		return "redirect:/board";
-	}
-
-	@RequestMapping(value = "/view/{no}", method = RequestMethod.GET)
-	public String view(@PathVariable("no") int no, Model model) {
-		BoardVo boardVo = boardService.findViewByNo(no);
-
+	
+	@RequestMapping("/view/{no}")
+	public String view(@PathVariable("no") Long no, Model model) {
+		BoardVo boardVo = boardService.getContents(no);
 		model.addAttribute("boardVo", boardVo);
 		return "board/view";
 	}
 	
-	@RequestMapping(value = "/delete/{no}", method = RequestMethod.GET)
-	public String delete(@PathVariable("no") int no, Model model, HttpSession session) {
+	@RequestMapping("/delete/{no}")
+	public String delete(
+		HttpSession session, 
+		@PathVariable("no") Long boardNo,
+		@RequestParam(value="p", required=true, defaultValue="1") Integer page,
+		@RequestParam(value="kwd", required=true, defaultValue="") String keyword) {	
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if(authUser == null) {
+			return "redirect:/user/login";
+		}
 
-		if (authUser == null) {
-			return "user/login";
+		boardService.deleteContents(boardNo, authUser.getNo());
+		return "redirect:/board?p=" + page + "&kwd=" + WebUtil.encodeURL(keyword, "UTF-8");
+	}
+	
+	@RequestMapping("/modify/{no}")	
+	public String modify(HttpSession session, @PathVariable("no") Long no, Model model) {
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if(authUser == null) {
+			return "redirect:/user/login";
 		}
 		
-		Long userNo = boardService.findUserNoByNo(no);
-		if(userNo != authUser.getNo()) {
-			return "redirect:/board";
-		}
-	
-		boardService.delete(no);
-		return "redirect:/board";
+		BoardVo boardVo = boardService.getContents(no, authUser.getNo());
+
+		model.addAttribute("boardVo", boardVo);
+		return "board/modify";
 	}
 
-//	@RequestMapping(value = "/search", method = RequestMethod.POST)
-//	public String search(@RequestParam("keyword") String keyword, Model model) {
-//		if("".equals(keyword)) {
-//			return "redirect:/board";
-//		}
-//
-//		return "";
-//	}
-//
-//	@RequestMapping(value = "/search/{keyword}/{no}", method = RequestMethod.GET)
-//	public String search(@PathVariable("no") int no, Model model) {
-//
-//		return "";
-//	}
-//
-//	@RequestMapping(value = "/search/{keyword}/{no}", method = RequestMethod.GET)
-//	public String delete(HttpSession session) {
-//		UserVo authUser = (UserVo) session.getAttribute("authUser");
-//
-//		if (authUser == null) {
-//			return "user/login";
-//		}
-//
-//		return "";
-//	}
+	@RequestMapping(value="/modify", method=RequestMethod.POST)	
+	public String modify(
+		HttpSession session, 
+		@ModelAttribute BoardVo boardVo,
+		@RequestParam(value="p", required=true, defaultValue="1") Integer page,
+		@RequestParam(value="kwd", required=true, defaultValue="") String keyword) {	
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if(authUser == null) {
+			return "redirect:/user/login";
+		}
+		
+		boardVo.setUserNo(authUser.getNo());
+		boardService.modifyContents(boardVo);
+		return "redirect:/board/view/" + boardVo.getNo() + 
+				"?p=" + page + 
+				"&kwd=" + WebUtil.encodeURL( keyword, "UTF-8" );
+	}
+
+	@RequestMapping(value="/write", method=RequestMethod.GET)	
+	public String write(HttpSession session) {
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if(authUser == null) {
+			return "redirect:/user/login";
+		}
+		return "board/write";
+	}
+
+	@RequestMapping(value="/write", method=RequestMethod.POST)	
+	public String write(
+		HttpSession session, 
+		@ModelAttribute BoardVo boardVo,
+		@RequestParam(value="p", required=true, defaultValue="1") Integer page,
+		@RequestParam(value="kwd", required=true, defaultValue="") String keyword) {
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if(authUser == null) {
+			return "redirect:/user/login";
+		}
+		
+		boardVo.setUserNo(authUser.getNo());
+		boardService.addContents(boardVo);
+		
+		return	"redirect:/board?p=" + page + "&kwd=" + WebUtil.encodeURL(keyword, "UTF-8");
+	}
+
+	@RequestMapping(value="/reply/{no}")	
+	public String reply(
+		HttpSession session, 
+		@PathVariable("no") Long no,
+		Model model) {
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if(authUser == null) {
+			return "redirect:/user/login";
+		}
+		
+		BoardVo boardVo = boardService.getContents(no);
+		boardVo.setoNo(boardVo.getoNo() + 1);
+		boardVo.setDepth(boardVo.getDepth() + 1);
+		
+		model.addAttribute("boardVo", boardVo);
+		
+		return "board/reply";
+	}	
 }
