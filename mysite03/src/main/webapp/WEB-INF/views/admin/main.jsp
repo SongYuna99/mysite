@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+pageContext.setAttribute("newline", "\n");
+%>
 <html>
 <head>
 <title>mysite</title>
@@ -19,15 +22,17 @@
 						<label class="block-label" for="title">사이트 타이틀</label>
 						<input id="title" name="title" type="text" value="${siteVo.title }">
 						
-						<label class="block-label" for="welcomeMessage">환영 메세지</label>
-						<input id="welcomeMessage" name="welcomeMessage" type="text" value="${siteVo.welcomeMessage }">
+						<label class="block-label" for="welcome">환영 메세지</label>
+						<input id="welcomeMessage" name="welcome" type="text" value="${siteVo.welcome }">
 
 						<label class="block-label">프로필 이미지</label>
-						<img id="profile" src="${pageContext.request.contextPath }/${siteVo.profileURL }">
+						<img id="profile" src="${pageContext.request.contextPath }/${siteVo.profile }">
 						<input type="file" name="file1">
 
 						<label class="block-label">사이트 설명</label>
-						<textarea name="description">${siteVo.description }</textarea>
+						<textarea name="description">
+							${fn:replace(siteVo.description, newLine, "<br>") }
+						</textarea>
 						
 						<input type="submit" value="변경" />
 					</form>
