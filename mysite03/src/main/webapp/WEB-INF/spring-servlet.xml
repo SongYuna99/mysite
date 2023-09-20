@@ -10,11 +10,36 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- validatorv, / Default Servlet Handler / Message Converter / Argument Resolver -->
-	<mvc:annotation-driven></mvc:annotation-driven>
+	<!-- validator, / Default Servlet Handler / Message Converter / Argument 
+		Resolver -->
+	<mvc:annotation-driven>
+		<!-- Argument Resolvers -->
+		<mvc:argument-resolvers>
+			<bean class="com.poscodx.mysite.security.AuthUserHandlerMethodArgumentResolver"></bean>
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
 
 	<!-- Default Servlet Handdler -->
 	<mvc:default-servlet-handler />
+
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/auth" />
+			<bean class="com.poscodx.mysite.security.LoginInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/logout" />
+			<bean class="com.poscodx.mysite.security.LogoutInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/assests/**"/>
+			<mvc:exclude-mapping path="/user/auth"/>
+			<mvc:exclude-mapping path="/user/logout"/>
+			<bean class="com.poscodx.mysite.security.AuthInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<context:annotation-config />
 	<context:component-scan
