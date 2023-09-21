@@ -20,8 +20,9 @@ pageContext.setAttribute("newline", "\n");
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile"
-						src="${pageContext.request.contextPath }/${siteVo.profile }">
+					<c:if test="${ siteVo.profile != '' }">
+						<img id="profile" src="${pageContext.request.contextPath }/${siteVo.profile }">					
+					</c:if>
 					<h2>${siteVo.welcome }</h2>
 					<p>
 						${fn:replace(siteVo.description, newLine, "<br>") }<br> <br> 
