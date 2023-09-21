@@ -22,6 +22,12 @@ public class AdminController {
 		model.addAttribute("siteVo", siteVo);
 		return "/admin/main";
 	}
+	
+	@RequestMapping("/update")
+	public String update(SiteVo siteVo) {
+		siteService.UpdateSite(siteVo);
+		return "/admin/main";
+	}
 
 	@RequestMapping("/guestbook")
 	public String guestbook() {

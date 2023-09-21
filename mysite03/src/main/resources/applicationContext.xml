@@ -37,7 +37,7 @@
 	<context:annotation-config />
 
 	<context:component-scan
-		base-package="com.poscodx.mysite.repository, com.poscodx.mysite.service, com.poscodx.mysite.aspect">
+		base-package="com.poscodx.mysite.repository, com.poscodx.mysite.service, com.poscodx.mysite.aspect, com.poscodx.mysite.exception">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Repository" />
 		<context:include-filter type="annotation"
