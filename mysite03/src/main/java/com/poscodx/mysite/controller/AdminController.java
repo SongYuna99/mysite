@@ -1,6 +1,7 @@
 package com.poscodx.mysite.controller;
 
-import org.apache.catalina.core.ApplicationContext;
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +18,12 @@ import com.poscodx.mysite.vo.SiteVo;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	@Autowired
-	private ApplicationContext applicationContext;
-	
 //	@Autowired
-//	private ServletContext servletContext;
-	
+//	private ApplicationContext applicationContext;
+
+	@Autowired
+	private ServletContext servletContext;
+
 	@Autowired
 	private SiteService siteService;
 
@@ -45,6 +46,7 @@ public class AdminController {
 			siteVo.setProfile(url);
 		}
 		siteService.UpdateSite(siteVo);
+		servletContext.setAttribute("siteVo", siteVo);
 
 		model.addAttribute("url", url);
 		return "redirect:/admin/";
