@@ -15,7 +15,8 @@
 	<mvc:annotation-driven>
 		<!-- Argument Resolvers -->
 		<mvc:argument-resolvers>
-			<bean class="com.poscodx.mysite.security.AuthUserHandlerMethodArgumentResolver"></bean>
+			<bean
+				class="com.poscodx.mysite.security.AuthUserHandlerMethodArgumentResolver"></bean>
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 
@@ -34,12 +35,23 @@
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/assests/**"/>
-			<mvc:exclude-mapping path="/user/auth"/>
-			<mvc:exclude-mapping path="/user/logout"/>
+			<mvc:exclude-mapping path="/assests/**" />
+			<mvc:exclude-mapping path="/user/auth" />
+			<mvc:exclude-mapping path="/user/logout" />
 			<bean class="com.poscodx.mysite.security.AuthInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
+
+	<!-- 6. MessageSource -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages/messages_ko</value>
+				<value>messages/messages_en</value>
+			</list>
+		</property>
+	</bean>
 
 	<context:annotation-config />
 	<context:component-scan
@@ -66,9 +78,10 @@
 			<!-- defaultEncoding -->
 			<property name="defaultEncoding" value="utf-8" />
 		</bean>
-		
+
 		<!-- url-resource mapping -->
-		<mvc:resources mapping="/images/**" location="file:/mysite-uploads/"></mvc:resources>
+		<mvc:resources mapping="/images/**"
+			location="file:/mysite-uploads/"></mvc:resources>
 	</beans>
 
 </beans>

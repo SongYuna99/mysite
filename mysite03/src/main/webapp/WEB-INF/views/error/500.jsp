@@ -10,7 +10,7 @@
 <title>Error 500</title>
 </head>
 <body>
-	<h1>예기치 않은 오류(Internal Server Error 500))</h1>
+	<h1>예기치 오류(Internal Server Error 500))</h1>
 	<p>
 		죄송합니다. 오류가 발생했습니다.<br>
 		잠시후, 다시 시도해주세요.
