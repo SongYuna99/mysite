@@ -76,6 +76,9 @@
 				</list>
 			</property>
 		</bean>
+		
+		<!-- ApplicationContextEventListener -->
+		<bean class="com.poscodx.mysite.event.ApplicationContextEventListener"></bean>
 
 		<!-- mulitpart resolver -->
 		<bean id="multipartResolver"
