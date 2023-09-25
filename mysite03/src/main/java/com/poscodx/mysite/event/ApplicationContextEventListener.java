@@ -20,13 +20,13 @@ public class ApplicationContextEventListener {
 	public void handlerContextRefreshedEvent() {
 		System.out.println("--- Context Refreshed Event Received. ---" + applicationContext);
 		SiteService siteService = applicationContext.getBean(SiteService.class);
-		SiteVo siteVo = siteService.getSite();
+		SiteVo site = siteService.getSite();
 
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
-		propertyValues.add("title", siteVo.getTitle());
-		propertyValues.add("profile", siteVo.getProfile());
-		propertyValues.add("welcome", siteVo.getWelcome());
-		propertyValues.add("description", siteVo.getDescription());
+		propertyValues.add("title", site.getTitle());
+		propertyValues.add("profile", site.getProfile());
+		propertyValues.add("welcome", site.getWelcome());
+		propertyValues.add("description", site.getDescription());
 
 		GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
 		beanDefinition.setBeanClass(SiteVo.class);
