@@ -43,7 +43,7 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/assests/**" />
-			<bean class="com.poscodx.mysite.security.SiteInterceptor"></bean>
+			<bean class="com.poscodx.mysite.interceptor.SiteInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
 
