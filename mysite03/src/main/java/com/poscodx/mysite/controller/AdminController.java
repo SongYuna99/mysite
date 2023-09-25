@@ -19,9 +19,6 @@ import com.poscodx.mysite.vo.SiteVo;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-//	@Autowired
-//	private ApplicationContext applicationContext;
-
 	@Autowired
 	private ServletContext servletContext;
 
