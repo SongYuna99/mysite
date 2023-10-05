@@ -4,16 +4,21 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	<display-name>mysite04</display-name>
+	
+	<!-- Container 종류를 알려주는 Parameter -->
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.context.annotation.AnnotationConfigApplicationContext;</param-value>
+	</context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>com.poscodx.mysite.config.AppConfig</param-value>
+	</context-param>
 
-	<!-- Listener -->
+	<!-- Content Load Listener -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext.xml</param-value>
-	</context-param>
 
 	<!-- Encoding Filter -->
 	<filter>
