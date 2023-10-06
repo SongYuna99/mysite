@@ -13,6 +13,8 @@
 			│		├ SecurityConfig.java 
 			│		├ MessageSourceConfig.java 
 			│		└ FileUploadConfig.java 		
+			├ /Initializer
+			│	└ MysiteWebApplicationInitializer.java
 			├ /controller
 			├ /service
 			├ /repository
