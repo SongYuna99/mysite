@@ -11,22 +11,25 @@
 			│	└ /web
 			│		├ MvcConfig.java
 			│		├ SecurityConfig.java 
-			│		├ MessageResourceConfig.java 
+			│		├ MessageSourceConfig.java 
 			│		└ FileUploadConfig.java 		
 			├ /controller
 			├ /service
-			└ /repository
+			├ /repository
+			└ /vo
 
 [src/main/resources]
 /com
 	└ /posco
 		└ /mysite
-			├ /app
-			│	└ /mybatis
-			│		├ Configuration.xml
-			│		└ /mappers
-			│			├ board.xml
-			│			└ user.xml
-			└ /web
-				└ /messages
-					└ messages_ko.propertis
+			└ /config
+				├ /app
+				│	├ jdbc.properties
+				│	└ /mybatis
+				│		├ Configuration.xml
+				│		└ /mappers
+				│			├ board.xml
+				│			└ user.xml
+				└ /web
+					└ /messages
+						└ messages_ko.propertis
