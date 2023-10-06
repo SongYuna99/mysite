@@ -33,7 +33,7 @@ pageContext.setAttribute("newline", "\n");
 							</c:when>
 							<c:otherwise>
 								<input type="hidden" name="profile" value="${siteVo.profile }">
-								<img id="profile" src="${pageContext.request.contextPath }${siteVo.profile }">
+								<img id="profile" src="${pageContext.request.contextPath }/${siteVo.profile }">
 							</c:otherwise>
 						</c:choose>
 						<input type="file" name="file">

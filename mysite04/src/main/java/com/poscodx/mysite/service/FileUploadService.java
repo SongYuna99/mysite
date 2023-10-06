@@ -5,21 +5,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.poscodx.mysite.exception.FileUploadServiceException;
 
 @Service
+@PropertySource("classpath:com/poscodx/mysite/config/web/fileupload.properties")
 public class FileUploadService {
-	private static String SAVE_PATH = "/mysite-uploads";
-	private static String URL_PATH = "assets/upload-images";
+	@Autowired
+	Environment env;
 
 	public String restore(MultipartFile file) {
 		String url = null;
 
 		try {
-			File uploadDirectory = new File(SAVE_PATH);
+			File uploadDirectory = new File(env.getProperty("fileupload.uploadLocation"));
 			if (!uploadDirectory.exists()) {
 				uploadDirectory.mkdirs();
 			}
@@ -33,17 +37,13 @@ public class FileUploadService {
 			String saveFilename = generateSaveFilename(extName);
 			Long fileSize = file.getSize();
 
-			System.out.println("##" + originalFilename);
-			System.out.println("##" + extName);
-			System.out.println("##" + saveFilename);
-			System.out.println("##" + fileSize);
-
 			byte[] data = file.getBytes();
-			FileOutputStream os = new FileOutputStream(SAVE_PATH + "/" + saveFilename);
+			FileOutputStream os = new FileOutputStream(
+					env.getProperty("fileupload.uploadLocation") + "/" + saveFilename);
 			os.write(data);
 			os.close();
 
-			url = URL_PATH + "/" + saveFilename;
+			url = env.getProperty("fileupload.resourceUrl") + "/" + saveFilename;
 
 		} catch (IOException e) {
 			throw new FileUploadServiceException(e.toString());
