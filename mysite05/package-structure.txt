@@ -1,0 +1,36 @@
+[src/main/java]
+/com
+	└ /posco
+		└ /mysite
+			├ /config
+			│	├ AppConfig.java
+			│	├ WebConfig.java
+			│	├ /app
+			│	│	├ DBConfig.java
+			│	│	└ MyBatisConfig.java 
+			│	└ /web
+			│		├ MvcConfig.java
+			│		├ SecurityConfig.java 
+			│		├ MessageSourceConfig.java 
+			│		└ FileUploadConfig.java 		
+			├ /controller
+			├ /service
+			├ /repository
+			└ /vo
+
+[src/main/resources]
+/com
+	└ /posco
+		└ /mysite
+			└ /config
+				├ /app
+				│	├ jdbc.properties
+				│	└ /mybatis
+				│		├ Configuration.xml
+				│		└ /mappers
+				│			├ board.xml
+				│			└ user.xml
+				└ /web
+					├ fileupload.properties
+					└ /messages
+						└ messages_ko.propertis
