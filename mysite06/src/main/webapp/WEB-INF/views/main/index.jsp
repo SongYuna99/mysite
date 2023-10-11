@@ -21,7 +21,7 @@ pageContext.setAttribute("newline", "\n");
 			<div id="content">
 				<div id="site-introduction">
 					<c:if test="${ siteVo.profile != '' }">
-						<img id="profile" src="${pageContext.request.contextPath }/${siteVo.profile }">					
+						<img id="profile" src="${pageContext.request.contextPath }${siteVo.profile }">					
 					</c:if>
 					<h2>${siteVo.welcome }</h2>
 					<p>

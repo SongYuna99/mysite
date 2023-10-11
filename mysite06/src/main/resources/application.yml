@@ -11,7 +11,7 @@ spring:
    # mvc
    mvc:
       static-path-pattern: /assets/**
-      throw-exception-if-no-hadler-found: true;
+      throw-exception-if-no-hadler-found: true
       view:
          prefix: /WEB-INF/views/
          suffix: .jsp
@@ -28,8 +28,8 @@ spring:
          
    # message resource (internationalization, i18n)
    messages:
-      always-message-format: true;
-      basename: messages/messages_ko
+      always-message-format: true
+      basename: web/messages/messages_ko
       encoding: utf-8
       
    # aop

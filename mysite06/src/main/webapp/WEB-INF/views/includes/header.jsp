@@ -5,8 +5,7 @@
 	pageEncoding="UTF-8"%>
 <div id="header">
 	<a href="${ pageContext.request.contextPath }" style="text-decoration:none">
-		<!-- <h1>${ siteVo.title }</h1> -->
-		<h1>${ site.title }</h1>
+		<h1>${ siteVo.title }</h1>
 	</a>
 	<ul>
 		<c:choose>
