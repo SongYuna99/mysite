@@ -1,4 +1,4 @@
-package me.kickscar.mysite.service;
+package com.poscodx.mysite.service;
 
 import java.io.File;
 import java.io.FileOutputStream;

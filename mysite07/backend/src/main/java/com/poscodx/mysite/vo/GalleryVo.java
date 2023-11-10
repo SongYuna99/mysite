@@ -1,4 +1,4 @@
-package me.kickscar.mysite.vo;
+package com.poscodx.mysite.vo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 public class GalleryVo {
 	private Long no;
-	private String url;
+	private String imageUrl;
 	private String comments;
 }

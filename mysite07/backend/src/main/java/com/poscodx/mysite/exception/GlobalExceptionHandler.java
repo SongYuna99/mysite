@@ -1,4 +1,4 @@
-package me.kickscar.mysite.exception;
+package com.poscodx.mysite.exception;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
-import me.kickscar.mysite.dto.JsonResult;
+
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import com.poscodx.mysite.dto.JsonResult;
 
 @ControllerAdvice
 @Slf4j

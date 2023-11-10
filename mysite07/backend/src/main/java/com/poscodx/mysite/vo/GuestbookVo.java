@@ -1,4 +1,4 @@
-package me.kickscar.mysite.vo;
+package com.poscodx.mysite.vo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,5 +12,5 @@ public class GuestbookVo {
 	private String name;
 	private String password;
 	private String regDate;
-	private String message;
+	private String contents;
 }

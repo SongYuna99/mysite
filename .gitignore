@@ -7,3 +7,6 @@
 **/.settings
 **/.classpath
 **/.project
+
+## node
+**/node_modules

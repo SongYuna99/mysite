@@ -1,11 +1,11 @@
-package me.kickscar.mysite.repository;
+package com.poscodx.mysite.repository;
 
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import me.kickscar.mysite.vo.GuestbookVo;
+import com.poscodx.mysite.vo.GuestbookVo;
 
 @Repository
 public class GuestbookRepository {

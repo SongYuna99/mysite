@@ -1,11 +1,11 @@
-package me.kickscar.mysite.service;
+package com.poscodx.mysite.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import me.kickscar.mysite.repository.GalleryRepository;
-import me.kickscar.mysite.vo.GalleryVo;
+import com.poscodx.mysite.repository.GalleryRepository;
+import com.poscodx.mysite.vo.GalleryVo;
 
 @Service
 public class GalleryService {

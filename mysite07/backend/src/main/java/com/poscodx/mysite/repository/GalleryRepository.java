@@ -1,11 +1,11 @@
-package me.kickscar.mysite.repository;
+package com.poscodx.mysite.repository;
 
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import me.kickscar.mysite.vo.GalleryVo;
+import com.poscodx.mysite.vo.GalleryVo;
 
 @Repository
 public class GalleryRepository {

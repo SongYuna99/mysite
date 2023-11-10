@@ -28,7 +28,7 @@ mysite07: backend
 
         - key 생성하기
 
-            # ssh-keygen -t rsa -b 2048 -m PEM -C "kickscar@gmail.com"
+            # ssh-keygen -t rsa -b 2048 -m PEM -C "thddbsk7248@gmail.com"
 
         - key 생성 확인
 
@@ -45,7 +45,7 @@ mysite07: backend
 
         - 접속 테스트
 
-            # ssh -i mykey.pem root@192.168.0.172
+            # ssh -i mykey.pem root@192.168.0.186
 
     2)  접속 환경 설정
 
@@ -60,6 +60,12 @@ mysite07: backend
           =======
 
         - PATH 환경 변수 설정, 특히 java 실행 패쓰 신경 쓸 것
+        
+        - /etc/ssh/sshd_config의 
+          PermitUserEnvironment yes
+        
+        - sshd 재실행
+          # systemctl restart sshd
 
     3)  Publish Over SSH 플러그인(Jenkins) 설정
 
