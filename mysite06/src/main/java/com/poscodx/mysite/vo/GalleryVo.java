@@ -7,8 +7,7 @@ public class GalleryVo {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "GalleryVo [no=" + no + ", comment=" + comment + ", imageUrl=" + imageUrl + "]";
 	}
 
 	public Long getNo() {

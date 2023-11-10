@@ -28,6 +28,12 @@ public class GuestbookController {
 
 		return "guestbook/main";
 	}
+	
+	@RequestMapping("/ajax")
+	public String ajax(Model model) {
+		
+		return "guestbook/main-ajax";
+	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String add(GuestbookVo guestbookVo) {

@@ -12,11 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.poscodx.mysite.interceptor.SiteInterceptor;
 import com.poscodx.mysite.security.AuthInterceptor;
 import com.poscodx.mysite.security.AuthUserHandlerMethodArgumentResolver;
 import com.poscodx.mysite.security.LoginInterceptor;
 import com.poscodx.mysite.security.LogoutInterceptor;
-import com.poscodx.mysite.security.SiteInterceptor;
 
 @SpringBootConfiguration
 public class WebConfig implements WebMvcConfigurer {

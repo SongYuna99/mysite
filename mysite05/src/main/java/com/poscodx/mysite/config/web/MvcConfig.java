@@ -31,7 +31,7 @@ public class MvcConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry
 		.addResourceHandler("/assets/**")
-		.addResourceLocations("classpath:assets");
+		.addResourceLocations("classpath:/assets/");
 	}
 
 	// Default Servlet Handdler (spring-servlet.xml)
